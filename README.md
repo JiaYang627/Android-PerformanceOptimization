@@ -241,6 +241,7 @@ for (int i = 0; i < imgs.length; i++) {
 ```
 <a name="9"/>
 #### Hierarchy Viewer(层级查看器)工具使用
+
 * Hierarchy Viewer可以很直接的呈现布局的层次关系，视图组件的各种属性。 我们可以通过红，黄，绿三种不同的颜色来区分布局的Measure，Layout，Executive的相对性能表现如何。
 打开工具
 
