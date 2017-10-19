@@ -1,5 +1,4 @@
 # Android-PerformanceOptimization
-Android性能优化
 # 性能优化
 ***
 * [卡顿](#1)
@@ -15,6 +14,7 @@ Android性能优化
 
 <a name="1"/>
 ### 卡顿
+
 > 前言：关于Android性能优化,为何把"卡顿"放在前面 ？ 对于用户而言,可能注重的是App的流畅度,而如果AppUI卡顿,用户体验就不是很好了。所以想说明一下什么是"卡顿",并了解一般卡顿的原因,这样才能解决卡顿。
 
 * "卡顿"是什么？
@@ -116,6 +116,8 @@ https://developer.android.google.cn/topic/performance/rendering/profile-gpu.html
 ***
 <a name="5"/>
 ## 通用优化流程
+
+
 <a name="6"/>
 ### 第一步：UI层优化
 
@@ -272,6 +274,16 @@ for (int i = 0; i < imgs.length; i++) {
 
 <a name="10"/>
 ### 第二步：代码问题查找
+
+
+
+
+
+
+
+
+
+
 
 
 
