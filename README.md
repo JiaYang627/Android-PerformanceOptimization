@@ -1,4 +1,3 @@
-# Android-PerformanceOptimization
 # 性能优化
 ***
 * [卡顿](#1)
@@ -35,6 +34,7 @@
 ![Image](http://a1.qpic.cn/psb?/V14YlNrL2eQEkW/9IIVaVopt5ds2b8y8Fx3DKUI930tEdZI.NGYlz0rd5Q!/b/dPkAAAAAAAAA&bo=wgE6AQAAAAADAN0!&rf=viewer_4)
 
 * 如果此时用户在看动画的执行或者滚动屏幕（如RecyclerView），就会感觉到界面不流畅了（卡了一下）。丢帧导致卡顿产生。
+
 **流畅的情况下：**
 
 ![Image](http://a1.qpic.cn/psb?/V14YlNrL2eQEkW/76qIAgqViA1Dw9aiyY6yIlCkdaNOyo2WzU0cE9UJTjE!/b/dBEBAAAAAAAA&bo=twFuAQAAAAADAPw!&rf=viewer_4)
@@ -69,6 +69,7 @@
 
 <a name="3"/>
 ### "卡顿" 产生的原因
+
 * 核心：分析在16ms中我们的应用做了什么工作，哪些工作阻止我们在16ms时更新界面。
 * 通常情况下，在16ms中我们有那些工作需要处理。单以XML布局被绘制出来为例进行说明。
 * 处理过程：
@@ -274,9 +275,6 @@ for (int i = 0; i < imgs.length; i++) {
 
 <a name="10"/>
 ### 第二步：代码问题查找
-
-
-
 
 
 
