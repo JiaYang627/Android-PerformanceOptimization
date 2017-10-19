@@ -286,5 +286,3 @@ for (int i = 0; i < imgs.length; i++) {
 
 
 
-
-
