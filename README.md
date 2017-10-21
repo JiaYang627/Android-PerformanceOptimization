@@ -10,6 +10,7 @@
         * [自定义控件绘制优化](#8)
         * [Hierarchy Viewer(层级查看器)工具使用](#9)
     * [第二步：代码问题查找](#10)
+    * [第三步：优化App的逻辑层](#11)
 
 <a name="1"/>
 ### 卡顿
@@ -128,10 +129,10 @@ https://developer.android.google.cn/topic/performance/rendering/profile-gpu.html
 工具：设备过渡绘制查看功能、Hierarchy Viewer等
 常见问题：过渡绘制、布局复杂、层级过深……
 <a name="7"/>
-#### 过度绘制
+### 过度绘制
 
 * 在屏幕一个像素上绘制多次（超过两次）。如：文本框，如果设置了背景颜色（黑色），那么显示的文字（白色）就需要在背景之上再次绘制。
-* 打开手机开发者中的过渡绘制区域即可查看。蓝色标识这个区域绘制了两次。(6.0以上)。
+* 打开手机开发者中的**GPU过度绘制**即可查看。蓝色标识这个区域绘制了两次。(6.0以上)。
 
 ![过度绘制](http://a1.qpic.cn/psb?/V14YlNrL2eQEkW/7FoBxIpMd8lvyTGui*cqwyFyPeWr5tdkvsRVrzGcdjI!/b/dA4BAAAAAAAA&bo=KQFKASkBSgEDByI!&rf=viewer_4)
 
@@ -276,6 +277,134 @@ for (int i = 0; i < imgs.length; i++) {
 
 <a name="10"/>
 ### 第二步：代码问题查找
+
+常见问题：我们重点关注Performance和Xml中的一些建议
+* 在绘制时实例化对象（onDraw）
+* 手机不能进入休眠状态（Wake lock）
+* 资源忘记回收
+* Handler使用不当倒置内存泄漏
+* 没有使用SparseArray代替HashMap
+* 未被使用的资源
+* 布局中无用的参数
+* 可优化布局（如：ImageView与TextView的组合是否可以使用TextView独立完成）
+* 效率低下的weight
+* 无用的命名空间等
+
+**Lint工具使用**
+
+Android Studio中开启Lint工具,选中需要分析的Module，点击工具栏中Analyze中的Inspect Code选项。
+
+![Lint-1](http://b271.photo.store.qq.com/psb?/V14YlNrL2eQEkW/Zwx7cUKgzaf7c.HxQPNd0PmBqWpPcyxHzkgVr7o2K.Y!/b/dA8BAAAAAAAA&bo=gQLpAYEC6QEDByI!&rf=viewer_4)
+
+
+选择需要分析的Module或整个项目
+
+
+![Lint-2](http://a1.qpic.cn/psb?/V14YlNrL2eQEkW/pXALppPqtGPBPUFn0*bn5zQNvDDuI7frWuo6DPjKBhg!/b/dPkAAAAAAAAA&bo=jwFwAY8BcAEDACU!&rf=viewer_4)
+
+
+我们可以逐一阅读一下，但是重点关注性能问题，xml中的一些问题也尽可能进行修复。
+
+![Lint-3](http://a1.qpic.cn/psb?/V14YlNrL2eQEkW/jHd44oYmHQyC64DA.wsLnnu2LVeMRbAR8IsY5EgfZjU!/b/dBQBAAAAAAAA&bo=vAPWALwD1gADACU!&rf=viewer_4)
+
+
+**问题处理**
+
+* 案例中性能问题处理
+
+![LintQuestion-1](http://a1.qpic.cn/psb?/V14YlNrL2eQEkW/j70H6Ik4a*hEL8oiT6yiuXtLq2Aor3wj9yLq8AGJ7Gw!/b/dMkAAAAAAAAA&bo=6QFJAOkBSQADACU!&rf=viewer_4)
+
+其他的一些性能问题
+
+![LintQuestion-2](http://a1.qpic.cn/psb?/V14YlNrL2eQEkW/Xv4KhqpJAyvpzlcLZgsfZ7DjSW6tx1UyMffgQE118p4!/b/dMkAAAAAAAAA&bo=ZgJ4AGYCeAADACU!&rf=viewer_4)
+
+***
+
+* 案例中xml提到的内容如下
+
+![LintQuestion-3](http://a1.qpic.cn/psb?/V14YlNrL2eQEkW/DLm0ziaah.kqtciq9spSdV2eRUQTlqL2Xp69jZfArZY!/b/dBoBAAAAAAAA&bo=ZwFiAGcBYgADACU!&rf=viewer_4)
+
+其他问题：
+* 无效的命名空间
+
+![LintQuestion-4](http://a1.qpic.cn/psb?/V14YlNrL2eQEkW/N87L5mYg1VeJ3UiBgo2loMcelpa1M0P50xGvCuzlOUw!/b/dMkAAAAAAAAA&bo=rwGgAK8BoAADACU!&rf=viewer_4)
+
+* 无效的布局参数
+比如在线性布局中的控件使用到了相对布局中的属性，运行时需要处理，影响代码的执行效率。
+
+***
+* 案例中关于定义声明变量的警告
+
+![LintQuestion-5](http://a1.qpic.cn/psb?/V14YlNrL2eQEkW/WhaV9POiwwyi.QN*VQ6G4VXhPZUmrvbv1tAgir6zLgw!/b/dLEAAAAAAAAA&bo=cwFzAHMBcwADACU!&rf=viewer_4)
+
+
+
+意见或建议:
+* 不断关注Lint中提到的问题，将公司中命名规范中没有提到的内容逐一补全。
+* Lint不是万能的。
+* 可使用阿里推出的插件：Alibaba Java Coding Guidelines。
+
+
+<a name="11"/>
+### 第三步：优化App的逻辑层
+
+常见问题：主线程耗时大的函数、滑动过程中的CPU工作问题，工具可以提供每个函数的耗时和调用次数，我们重点关注两种类型的函数：
+* 主线程里占用CUP时间很长的函数，特别关注IO操作（文件IO、网络IO、数据库操作等）。
+* 主线程调用次数多的函数。
+
+**使用Traceview找出卡住主线程的地方**
+
+Traceview工具使用
+
+通过Android Studio打开里面的Android Device Monitor，切换到DDMS窗口，点击左边栏上面想要跟踪的进程，再点击上面的Start Method Profiling的按钮，如下图所示：
+
+![Traceview-1](http://a2.qpic.cn/psb?/V14YlNrL2eQEkW/fOQ1mtYLUlLqoH3rkNdbBaIUr.EelzJnWN6Hjkg2sts!/b/dPcAAAAAAAAA&bo=OQPXATkD1wEDByI!&rf=viewer_4)
+
+启动跟踪之后，再操控app，做一些你想要跟踪的事件，例如滑动RecyclerView，点击某些视图进入另外一个页面等等。操作完之后，回到Android Device Monitor，再次点击相同的按钮停止跟踪。此时工具会为刚才的操作生成TraceView的详细视图。
+
+![Tranceview-2](http://a1.qpic.cn/psb?/V14YlNrL2eQEkW/2jQgAjwFaxdLcHA1YDb0jhDXS2p0F9Qz1CrKwW1d208!/b/dHUAAAAAAAAA&bo=qwWAAtIFkQIDAE0!&rf=viewer_4)
+
+重点关注Incl Cpu Time、Call+Recur Calls/Total、Real Time/Call
+通过降序排序，我们可以分别找到这两列中数值比较大的内容。
+
+指标说明:
+
+* Incl(Inclusive) Cpu Time：方法本身和其调用的所有子方法占用CPU时间。
+* Excl(Exclusive) Cpu Time：方法本身占用CPU时间。
+* Incl Real Time：方法(包含子方法)开始到结束用时。
+* Excl Real Time：方法本身开始到结束用时。
+* Call + Recursion Calls/Total：方法被调用次数 + 方法被递归调用次数。
+* Cpu Time/Call：方法调用一次占用CPU时间. 方法实际执行时间(不包括io等待时间)。
+* Real Time/Call：方法调用一次实际执行时间. 方法开始结束时间差(包括等待时间)。
+
+小案例：
+我们可以在ViewHolder的设置数据中做点手脚，比如睡几毫秒（8ms），通过监控滚动，我们是否可以定位到问题代码。
+
+**好的做法**
+
+* 不要阻塞UI线程，占用CUP较多的工作尽可能放在子线程中执行。
+* 需要结合使用场景选择不同的线程处理方案
+	AsyncTask: 为UI线程与工作线程之间进行快速的切换提供一种简单便捷的机制。适用于当下立即需要启动，但是异步执行的生命周期短暂的使用场景。
+    HandlerThread: 为某些回调方法或者等待某些任务的执行设置一个专属的线程，并提供线程任务的调度机制。
+    ThreadPool: 把任务分解成不同的单元，分发到各个不同的线程上，进行同时并发处理。
+    IntentService: 适合于执行由UI触发的后台Service任务，并可以把后台任务执行的情况通过一定的机制反馈给UI。
+* 如果大量操作数据库数据时建议使用批处理操作。如：批量添加数据。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
