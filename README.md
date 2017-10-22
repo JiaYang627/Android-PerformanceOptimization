@@ -2,13 +2,13 @@
 ***
 * [卡顿](#卡顿)
 * [如何衡量卡顿](#如何衡量卡顿)
-* ["卡顿" 产生的原因](#"卡顿" 产生的原因)
-* [Profile GPU Rendering](#Profile GPU Rendering)
+* ["卡顿" 产生的原因](# "卡顿" 产生的原因)
+* [Profile GPU Rendering](#ProfileGPURendering)
 * [通用优化流程](#通用优化流程)
     * [第一步：UI层优化](#第一步：UI层优化)
         * [过度绘制](#过度绘制)
         * [自定义控件绘制优化](#自定义控件绘制优化)
-        * [Hierarchy Viewer(层级查看器)工具使用](#Hierarchy Viewer(层级查看器)工具使用)
+        * [Hierarchy Viewer(层级查看器)工具使用](#HierarchyViewer(层级查看器)工具使用)
     * [第二步：代码问题查找](#第二步：代码问题查找)
     * [第三步：优化App的逻辑层](#第三步：优化App的逻辑层)
 
