@@ -1,16 +1,16 @@
 # 性能优化
 ***
 * [卡顿](#卡顿)
-* [如何衡量卡顿](#2)
-* ["卡顿" 产生的原因](#3)
-* [Profile GPU Rendering](#4)
-* [通用优化流程](#5)
-    * [第一步：UI层优化](#6)
-        * [过度绘制](#7)
-        * [自定义控件绘制优化](#8)
-        * [Hierarchy Viewer(层级查看器)工具使用](#9)
-    * [第二步：代码问题查找](#10)
-    * [第三步：优化App的逻辑层](#11)
+* [如何衡量卡顿](#如何衡量卡顿)
+* ["卡顿" 产生的原因](#"卡顿" 产生的原因)
+* [Profile GPU Rendering](#Profile GPU Rendering)
+* [通用优化流程](#通用优化流程)
+    * [第一步：UI层优化](#第一步：UI层优化)
+        * [过度绘制](#过度绘制)
+        * [自定义控件绘制优化](#自定义控件绘制优化)
+        * [Hierarchy Viewer(层级查看器)工具使用](#Hierarchy Viewer(层级查看器)工具使用)
+    * [第二步：代码问题查找](#第二步：代码问题查找)
+    * [第三步：优化App的逻辑层](#第三步：优化App的逻辑层)
 
 
 ### 卡顿
@@ -50,7 +50,7 @@
     
 
 ***
-<a name="2"/>
+
 ### 如何衡量卡顿
 
 * FPS的高低不能准确的反映应用的流程度。只有有更新的时候才刷新界面。当界面没有变动的时候，手机不需要对界面进行更新，所以此时的FPS会很低，如果1秒钟内都没有变动那么FPS=0。所以我们需要利用其他方式来衡量应用的流程度，比如可以利用丢帧数来衡量。
@@ -68,7 +68,7 @@
 
 对于我们开发人员来说,会使用一些工具找出卡顿比较集中的地方,找出原因,消除或减弱卡顿。(测试团队会有专门的工具去测试丢帧的情况)
 
-<a name="3"/>
+
 ### "卡顿" 产生的原因
 
 * 核心：分析在16ms中我们的应用做了什么工作，哪些工作阻止我们在16ms时更新界面。
@@ -79,7 +79,7 @@
     * GPU栅格化需要显示内容并渲染到屏幕上
 
 * 而实际开发中我们还加入交互、业务处理等工作，这些工作都需要在16ms中处理完成。对于开发人员来说，需要有一个工具，很直观的帮助我们判断出那些工作占用了多少时间。
-<a name="4"/>
+
 ### Profile GPU Rendering
 
 * 通过手机开发者选项中提供的Profile GPU Rendering（GPU呈现模式分析）功能，我们可以清楚的看到处理流程中各部分的耗时。手机端工具（开发助手GPU渲染图）。建议大家在Android6.0及以上手机测试。
@@ -116,11 +116,10 @@
 https://developer.android.google.cn/topic/performance/rendering/profile-gpu.html##visrep
 
 ***
-<a name="5"/>
+
 ## 通用优化流程
 
 
-<a name="6"/>
 ### 第一步：UI层优化
 
 * UI问题比较容易查找
@@ -128,7 +127,7 @@ https://developer.android.google.cn/topic/performance/rendering/profile-gpu.html
 
 工具：设备过渡绘制查看功能、Hierarchy Viewer等
 常见问题：过渡绘制、布局复杂、层级过深……
-<a name="7"/>
+
 ### 过度绘制
 
 * 在屏幕一个像素上绘制多次（超过两次）。如：文本框，如果设置了背景颜色（黑色），那么显示的文字（白色）就需要在背景之上再次绘制。
@@ -141,7 +140,7 @@ https://developer.android.google.cn/topic/performance/rendering/profile-gpu.html
     * 如果大面积都是蓝色，属于正常情况。
     * 重点关注大面积绿色及以后的，表示存在过渡绘制。
 
-<a name="8"/>
+
 #### 自定义控件绘制优化
 
 * Clip Rect 与 Quick Reject
@@ -240,7 +239,7 @@ for (int i = 0; i < imgs.length; i++) {
     canvas.restore();
 }
 ```
-<a name="9"/>
+
 #### Hierarchy Viewer(层级查看器)工具使用
 
 * Hierarchy Viewer可以很直接的呈现布局的层次关系，视图组件的各种属性。 我们可以通过红，黄，绿三种不同的颜色来区分布局的Measure，Layout，Executive的相对性能表现如何。
@@ -275,7 +274,7 @@ for (int i = 0; i < imgs.length; i++) {
 * 我们不能因为提高性能而忽略了界面需要达到的效果（平衡Design与Performance）。
 
 
-<a name="10"/>
+
 ### 第二步：代码问题查找
 
 常见问题：我们重点关注Performance和Xml中的一些建议
@@ -345,7 +344,7 @@ Android Studio中开启Lint工具,选中需要分析的Module，点击工具栏�
 * 可使用阿里推出的插件：Alibaba Java Coding Guidelines。
 
 
-<a name="11"/>
+
 ### 第三步：优化App的逻辑层
 
 常见问题：主线程耗时大的函数、滑动过程中的CPU工作问题，工具可以提供每个函数的耗时和调用次数，我们重点关注两种类型的函数：
