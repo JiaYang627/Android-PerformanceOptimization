@@ -265,7 +265,7 @@ for (int i = 0; i < imgs.length; i++) {
 
 
 **常规做法**
-* 没有用的父布局——没有背景绘制或没有大小限制的父布局，不会对界面效果产生任何影响。特别是**< include />**进来的布局，很容易产生问题。可以通过**< merge />**标签替代。
+* 没有用的父布局——没有背景绘制或没有大小限制的父布局，不会对界面效果产生任何影响。特别是** < include/> **进来的布局，很容易产生问题。可以通过** < merge /> **标签替代。
 * 在布局层次一样的情况下，建议使用LinearLayout代替RelativeLayout。
 * 使用LinearLayout导致的层次变深，可以使用RelativeLayout进行替换。同样的界面我们可以使用不同的方式去实现，选择一个层级最少的方案。
 * 不常用的UI被设置成了GONE，尝试使用**< ViewStub />**代替。[附上一ViewStub使用](http://www.jianshu.com/p/5f64bacbd759)
