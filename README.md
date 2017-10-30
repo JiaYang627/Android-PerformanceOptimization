@@ -265,10 +265,10 @@ for (int i = 0; i < imgs.length; i++) {
 
 
 **常规做法**
-* 没有用的父布局——没有背景绘制或没有大小限制的父布局，不会对界面效果产生任何影响。特别是*<include/>*进来的布局，很容易产生问题。可以通过*<merge/>*标签替代。
+* 没有用的父布局——没有背景绘制或没有大小限制的父布局，不会对界面效果产生任何影响。特别是*< include />*进来的布局，很容易产生问题。可以通过*< merge />*标签替代。
 * 在布局层次一样的情况下，建议使用LinearLayout代替RelativeLayout。
 * 使用LinearLayout导致的层次变深，可以使用RelativeLayout进行替换。同样的界面我们可以使用不同的方式去实现，选择一个层级最少的方案。
-* 不常用的UI被设置成了GONE，尝试使用*<ViewStub/>*代替。[附上一ViewStub使用](http://www.jianshu.com/p/5f64bacbd759)
+* 不常用的UI被设置成了GONE，尝试使用*< ViewStub />*代替。[附上一ViewStub使用](http://www.jianshu.com/p/5f64bacbd759)
 * 去掉多余的背景颜色，减少过渡绘制，对于有多层背景色的布局来说，留最上面的一层即可。谨慎使用alpha，如果后渲染的元素有设置alpha值，那么这个元素就会和屏幕上已经渲染好的元素做blend处理，这样会导致不少性能问题，特别是出现在列表的Item中。
 * 对于使用Selector当背景的布局，可以将normal状态的color设置为透明。
 * 我们不能因为提高性能而忽略了界面需要达到的效果（平衡Design与Performance）。
